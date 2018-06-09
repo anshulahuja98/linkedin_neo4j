@@ -1,0 +1,47 @@
+		LOAD CSV WITH HEADERS
+		FROM "file:///convertcsv.csv" AS line WITH line
+		CREATE (profile:Profile {
+								 name :						 line.`general/fullName`,
+								 headline :					 line.`general/headline`, 
+								 currentcompany :			 line.`general/company`,
+								 majorschool : 				 line.`general/school`,
+								 linkedin :                  line.`details/linkedinProfile`,
+								 image:                      line.`general/imgUrl`
+								 })
+			WITH line,profile
+		    WHERE   line.`jobs/0/companyName` IS NOT NULL AND line.`jobs/0/jobTitle` IS NOT NULL 
+			MERGE  (company:Company {
+								 name : 					 line.`jobs/0/companyName`,
+								 title :					 line.`jobs/0/jobTitle`,
+			})	
+		    CREATE (profile)-[:WORKED]->(company)
+
+		    WITH line,company
+		    WHERE   line.`jobs/1/companyName` IS NOT NULL AND line.`jobs/1/jobTitle` IS NOT NULL 
+			MERGE  (company1:Company {
+								 name : 					 line.`jobs/1/companyName`,
+								 title :					 line.`jobs/1/jobTitle`			 
+			})	
+			CREATE (company)-[:WORKED]->(company1)
+			WITH line,company1
+			WHERE   line.`jobs/2/companyName` IS NOT NULL AND line.`jobs/2/jobTitle` IS NOT NULL 	
+			MERGE  (company2:Company { 
+											 name : 					 line.`jobs/2/companyName`,								 title :					 line.`jobs/2/jobTitle`			 			
+					})
+			CREATE (company1)-[:WORKED]->(company2)
+	WITH line,company2		    WHERE   line.`jobs/3/companyName` IS NOT NULL AND line.`jobs/3/jobTitle` IS NOT NULL 			MERGE  (company3:Company { 								 name : 					 line.`jobs/3/companyName`,								 title :					 line.`jobs/3/jobTitle`			 			})				CREATE (company2)-[:WORKED]->(company3)
+	WITH line,company3		    WHERE   line.`jobs/4/companyName` IS NOT NULL AND line.`jobs/4/jobTitle` IS NOT NULL 			MERGE  (company4:Company { 								 name : 					 line.`jobs/4/companyName`,								 title :					 line.`jobs/4/jobTitle`			 			})				CREATE (company3)-[:WORKED]->(company4)
+	WITH line,company4		    WHERE   line.`jobs/5/companyName` IS NOT NULL AND line.`jobs/5/jobTitle` IS NOT NULL 			MERGE  (company5:Company { 								 name : 					 line.`jobs/5/companyName`,								 title :					 line.`jobs/5/jobTitle`			 			})				CREATE (company4)-[:WORKED]->(company5)
+	WITH line,company5		    WHERE   line.`jobs/6/companyName` IS NOT NULL AND line.`jobs/6/jobTitle` IS NOT NULL 			MERGE  (company6:Company { 								 name : 					 line.`jobs/6/companyName`,								 title :					 line.`jobs/6/jobTitle`			 			})				CREATE (company5)-[:WORKED]->(company6)
+	WITH line,company6		    WHERE   line.`jobs/7/companyName` IS NOT NULL AND line.`jobs/7/jobTitle` IS NOT NULL 			MERGE  (company7:Company { 								 name : 					 line.`jobs/7/companyName`,								 title :					 line.`jobs/7/jobTitle`			 			})				CREATE (company6)-[:WORKED]->(company7)
+	WITH line,company7		    WHERE   line.`jobs/8/companyName` IS NOT NULL AND line.`jobs/8/jobTitle` IS NOT NULL 			MERGE  (company8:Company { 								 name : 					 line.`jobs/8/companyName`,								 title :					 line.`jobs/8/jobTitle`			 			})				CREATE (company7)-[:WORKED]->(company8)
+	WITH line,company8		    WHERE   line.`jobs/9/companyName` IS NOT NULL AND line.`jobs/9/jobTitle` IS NOT NULL 			MERGE  (company9:Company { 								 name : 					 line.`jobs/9/companyName`,								 title :					 line.`jobs/9/jobTitle`			 			})				CREATE (company8)-[:WORKED]->(company9)
+
+
+
+
+
+
+
+
+
